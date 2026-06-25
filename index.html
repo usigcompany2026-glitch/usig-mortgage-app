@@ -8,6 +8,122 @@
     <title>USIG AI | Real Estate Financing Intelligence</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="manifest" href="manifest.json">
+    <style>
+        /* ── CRE UNDERWRITING BUTTON ───────────────────────── */
+        .usig-action-section {
+            margin-top: 20px;
+            padding: 18px;
+            background: rgba(201,168,76,0.06);
+            border: 1px solid rgba(201,168,76,0.3);
+            border-radius: 8px;
+        }
+        .usig-action-label {
+            font-size: 11px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #8a9bb0;
+            margin-bottom: 10px;
+            display: block;
+        }
+        .usig-cre-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 14px 20px;
+            background: #0B1F3A;
+            color: #E8C97A;
+            border: 2px solid #C9A84C;
+            border-radius: 7px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            font-family: inherit;
+            transition: all 0.2s;
+            letter-spacing: 0.3px;
+        }
+        .usig-cre-btn:hover {
+            background: #C9A84C;
+            color: #0B1F3A;
+        }
+        .usig-cre-btn .btn-sub {
+            font-size: 10px;
+            font-weight: 400;
+            opacity: 0.7;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            display: block;
+            margin-top: 2px;
+        }
+        .usig-cre-btn .btn-icon {
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+        .usig-cre-btn .btn-text {
+            text-align: left;
+        }
+        /* ── RESIDENTIAL SPHERE BUTTON ─────────────────────── */
+        .usig-res-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 14px 20px;
+            background: #0B1F3A;
+            color: #E8C97A;
+            border: 2px solid #C9A84C;
+            border-radius: 7px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            font-family: inherit;
+            transition: all 0.2s;
+            letter-spacing: 0.3px;
+        }
+        .usig-res-btn:hover {
+            background: #C9A84C;
+            color: #0B1F3A;
+        }
+        .usig-res-btn .btn-sub {
+            font-size: 10px;
+            font-weight: 400;
+            opacity: 0.7;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            display: block;
+            margin-top: 2px;
+        }
+        .usig-res-btn .btn-icon {
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+        .usig-res-btn .btn-text {
+            text-align: left;
+        }
+        .usig-divider {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 12px 0;
+        }
+        .usig-divider::before,
+        .usig-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(201,168,76,0.2);
+        }
+        .usig-divider span {
+            font-size: 10px;
+            color: #8a9bb0;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -44,27 +160,14 @@
 
                     <div class="loan-type-selector">
                         <div class="loan-option">
-                            <input 
-                                type="radio" 
-                                id="loanType_cre" 
-                                name="loanType" 
-                                value="cre" 
-                                required
-                            >
+                            <input type="radio" id="loanType_cre" name="loanType" value="cre" required>
                             <label for="loanType_cre" class="loan-option-label">
                                 <span class="option-title">Commercial Real Estate</span>
                                 <span class="option-desc">Retail, Office, Industrial, Multifamily, Hospitality, Development</span>
                             </label>
                         </div>
-
                         <div class="loan-option">
-                            <input 
-                                type="radio" 
-                                id="loanType_residential" 
-                                name="loanType" 
-                                value="residential" 
-                                required
-                            >
+                            <input type="radio" id="loanType_residential" name="loanType" value="residential" required>
                             <label for="loanType_residential" class="loan-option-label">
                                 <span class="option-title">Residential</span>
                                 <span class="option-desc">Purchase, Refinance, Cash-Out, Investment Property</span>
@@ -312,6 +415,23 @@
                         </div>
                     </fieldset>
 
+                    <!-- ═══════════════════════════════════════════════
+                         USIG CRE UNDERWRITING BUTTON
+                         Reads all CRE fields above and passes to
+                         Deal Engine v2 at cre-analyst.netlify.app
+                    ════════════════════════════════════════════════ -->
+                    <div class="usig-action-section">
+                        <span class="usig-action-label">✦ Optional — Run Instant Underwriting Analysis</span>
+                        <a id="usigCREBtn" href="#" onclick="usigLaunchCRE(event)" class="usig-cre-btn">
+                            <span class="btn-icon">📊</span>
+                            <span class="btn-text">
+                                Run CRE Underwriting Analysis
+                                <span class="btn-sub">USIG Deal Engine · 10-Metric Institutional Report</span>
+                            </span>
+                        </a>
+                        <p style="font-size:11px;color:#8a9bb0;margin-top:8px;text-align:center;">Opens in a new tab · Your form stays open · No data lost</p>
+                    </div>
+
                     <div class="form-actions">
                         <button type="button" class="btn-back" onclick="prevStep()">Back</button>
                         <button type="button" class="btn-next" onclick="nextStep()">Continue to Contact</button>
@@ -542,6 +662,23 @@
                         </div>
                     </fieldset>
 
+                    <!-- ═══════════════════════════════════════════════
+                         USIG RESIDENTIAL — SPHERE LOS BUTTON
+                         Opens Sphere POS link in new tab so borrower
+                         can start formal 1003 loan application
+                    ════════════════════════════════════════════════ -->
+                    <div class="usig-action-section">
+                        <span class="usig-action-label">✦ Optional — Start Your Formal Loan Application</span>
+                        <a id="usigSphereBtn" href="#" onclick="usigLaunchSphere(event)" class="usig-res-btn">
+                            <span class="btn-icon">🏠</span>
+                            <span class="btn-text">
+                                Start Loan Application
+                                <span class="btn-sub">Sphere LOS · Secure 1003 Application Portal</span>
+                            </span>
+                        </a>
+                        <p style="font-size:11px;color:#8a9bb0;margin-top:8px;text-align:center;">Opens in a new tab · Secure · Your form stays open</p>
+                    </div>
+
                     <div class="form-actions">
                         <button type="button" class="btn-back" onclick="prevStep()">Back</button>
                         <button type="button" class="btn-next" onclick="nextStep()">Continue to Contact</button>
@@ -575,12 +712,7 @@
                     <fieldset class="form-group">
                         <legend>Consent & Communication</legend>
                         <div class="checkbox-item checkbox-consent">
-                            <input 
-                                type="checkbox" 
-                                id="consent" 
-                                name="consent" 
-                                required
-                            >
+                            <input type="checkbox" id="consent" name="consent" required>
                             <label for="consent">
                                 I agree to be contacted by USIG AI regarding my financing inquiry via phone, email, SMS, and AI conversation. I understand my information will be stored securely and used only for underwriting and follow-up.
                             </label>
@@ -592,7 +724,6 @@
                         <button type="submit" class="btn-submit" id="submitBtn">Submit Application</button>
                     </div>
 
-                    <!-- Status Messages -->
                     <div id="successMessage" class="message message-success" style="display: none;">
                         ✓ Your application has been received. We'll analyze your details and contact you within 24 hours.
                     </div>
@@ -610,5 +741,60 @@
     </div>
 
     <script src="app.js"></script>
+
+    <script>
+    // ═══════════════════════════════════════════════════════════
+    // USIG INTEGRATION BUTTONS
+    // CRE → Deal Engine v2 at cre-analyst.netlify.app
+    // Residential → Sphere LOS POS link
+    // ═══════════════════════════════════════════════════════════
+
+    // ── UPDATE THIS URL if you get a custom Sphere POS link ──
+    var SPHERE_POS_URL = 'https://app.spherelos.com/pos/brenda-le-jones';
+
+    // ── CRE BUTTON: reads all form fields → builds URL → opens Deal Engine ──
+    function usigLaunchCRE(event) {
+        event.preventDefault();
+
+        var params = new URLSearchParams();
+
+        // Map your exact CRE field IDs to Deal Engine parameter names
+        var fieldMap = {
+            'crePropertyType' : 'assetClass',
+            'purchasePrice'   : 'price',
+            'loanAmount'      : 'loanAmt',
+            'creNoi'          : 'noi',
+            'capRate'         : 'capRate',
+            'ltv'             : 'ltv',
+            'dscr'            : 'dscr',
+            'creLocation'     : 'address',
+            'squareFootage'   : 'size',
+            'yearBuilt'       : 'yearBuilt',
+            'exitStrategy'    : 'notes',
+            'timeline'        : 'term',
+            'creNotes'        : 'notes'
+        };
+
+        Object.keys(fieldMap).forEach(function(fieldId) {
+            var el = document.getElementById(fieldId);
+            if (el && el.value && el.value.trim()) {
+                params.set(fieldMap[fieldId], el.value.trim());
+            }
+        });
+
+        // Tag the source so Deal Engine shows the integration banner
+        params.set('source', 'usig-mortgage-pwa');
+
+        var url = 'https://cre-analyst.netlify.app?' + params.toString();
+        window.open(url, '_blank');
+    }
+
+    // ── RESIDENTIAL BUTTON: opens Sphere LOS POS link ──
+    function usigLaunchSphere(event) {
+        event.preventDefault();
+        window.open(SPHERE_POS_URL, '_blank');
+    }
+    </script>
+
 </body>
 </html>
