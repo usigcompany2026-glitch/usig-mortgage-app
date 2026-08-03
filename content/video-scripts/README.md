@@ -50,8 +50,32 @@ don't mix them up across scripts:
 
 | Brand | Product | CTA offer | URL |
 |---|---|---|---|
-| **USIG.ai** | Residential / Commercial / Financing Analysis | Free trial of the tools | **tools.usig.ai** |
+| **USIG.ai** | Residential / Commercial / Financing Analysis (the "USIG Decision Tools") | **7-Day Free Trial** — no credit card required, cancel anytime, continue afterward with an optional monthly subscription | **tools.usig.ai** |
 | **biz.usig.ai** | Business Growth Advisory (A–Z advisory for business owners, including financing) | Free business automation audit | **biz.usig.ai** |
+
+Say "start your 7-day free trial," not generic "free trial" or "free analysis" — the actual offer has specific terms (no credit card, cancel anytime) that the CTA should reflect accurately.
+
+## USIG Decision Tools — who each one is built for
+
+Keep hooks investor/operator-facing, but the underlying audience per tool is
+professional-heavy. Don't write copy that implies a tool is consumer-only —
+these are also sold to and used by the professionals listed:
+
+| Tool | Built for |
+|---|---|
+| **Residential Analysis** | Residential investors, Realtors®, wholesalers, investment property professionals |
+| **Commercial Analysis** | Commercial investors, commercial brokers, lenders, advisors, boutique brokerages |
+| **Financing Analysis** | Mortgage professionals, Realtors®, CRE professionals, investors, financial advisors |
+
+## Compliance guardrails (USIG.ai)
+
+These aren't optional style notes — they're accuracy/compliance requirements
+from the product's actual terms:
+
+- **Commercial Analysis videos must carry a disclaimer**: "Analysis tool only. Not a substitute for lender underwriting, appraisals, engineering reports, legal review, or complete due diligence." Include it as brief on-screen text (final ~2 seconds) in every Commercial Analysis script — see `day1-usig-analysis.md` Section B.
+- **Never imply a guarantee.** USIG Decision Tools do not guarantee investment performance, property values, loan approval, financing terms, future appreciation, or transaction outcomes. Frame benefits as "organize," "evaluate," "compare," "see the number" — not "guarantee," "ensure," or "will get you approved."
+- **Don't overstate the CoStar mention.** If a script ever references CoStar (commercial users can add a shortcut to their own CoStar account), it is explicitly **not** a CoStar integration, data feed, or included subscription — don't imply otherwise.
+- **Financing Analysis scenarios for lender submission** are only for "licensed and authorized professionals," subject to company policy, lender requirements, and applicable regulations — don't write copy suggesting any user can submit AI-generated scenarios straight to a lender.
 
 ## Format & delivery notes for Higgsfield / CapCut
 
