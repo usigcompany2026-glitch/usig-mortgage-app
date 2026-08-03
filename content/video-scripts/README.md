@@ -43,6 +43,16 @@ Pulled from the live app (`index.html`): USIG positions itself as
 - **Product-anchored** — the solution beat should show or reference an actual USIG output (a report, a score, a DSCR, a comparison table), never a vague "we can help."
 - **No fake urgency, no guaranteed-return claims, no "get rich" framing.** This is underwriting software, not a hype account.
 
+## CTA / offer per brand
+
+USIG.ai and biz.usig.ai are two separate businesses with two separate offers —
+don't mix them up across scripts:
+
+| Brand | Product | CTA offer | URL |
+|---|---|---|---|
+| **USIG.ai** | Residential / Commercial / Financing Analysis | Free trial of the tools | **tools.usig.ai** |
+| **biz.usig.ai** | Business Growth Advisory (A–Z advisory for business owners, including financing) | Free business automation audit | **biz.usig.ai** |
+
 ## Format & delivery notes for Higgsfield / CapCut
 
 - **Native aspect ratio:** shoot/generate in **9:16** (vertical) as the master. Reels, Shorts, and TikTok are native 9:16.
