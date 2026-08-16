@@ -23,6 +23,140 @@ let formData = {
 };
 
 // ===================================
+// DOCUMENT UPLOAD
+// ===================================
+
+let selectedFiles = [];
+const MAX_FILES = 5;
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
+
+function handleFileSelect(fileList) {
+    const incoming = Array.from(fileList);
+    for (const file of incoming) {
+        if (selectedFiles.length >= MAX_FILES) {
+            alert(`Maximum ${MAX_FILES} files allowed.`);
+            break;
+        }
+        if (file.size > MAX_FILE_SIZE) {
+            alert(`"${file.name}" exceeds the 10 MB limit and was not added.`);
+            continue;
+        }
+        if (selectedFiles.some(f => f.name === file.name && f.size === file.size)) {
+            continue; // skip duplicate
+        }
+        selectedFiles.push(file);
+    }
+    renderFileList();
+}
+
+function removeFile(index) {
+    selectedFiles.splice(index, 1);
+    renderFileList();
+}
+
+function getFileIcon(type) {
+    if (!type) return '📎';
+    if (type === 'application/pdf') return '📄';
+    if (type.startsWith('image/')) return '🖼️';
+    if (type.includes('word') || type.includes('document')) return '📝';
+    return '📎';
+}
+
+function formatFileSize(bytes) {
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+    return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+}
+
+function renderFileList() {
+    // Render into whichever list is currently visible
+    const listIds = ['fileList', 'fileListRES'];
+    listIds.forEach(id => {
+        const container = document.getElementById(id);
+        if (!container) return;
+        container.innerHTML = '';
+        selectedFiles.forEach((file, i) => {
+            const item = document.createElement('div');
+            item.className = 'file-item';
+            item.innerHTML = `
+                <span class="file-item-icon">${getFileIcon(file.type)}</span>
+                <div class="file-item-info">
+                    <div class="file-item-name">${file.name}</div>
+                    <div class="file-item-size">${formatFileSize(file.size)}</div>
+                </div>
+                <button type="button" class="file-item-remove" onclick="removeFile(${i})" title="Remove">✕</button>
+            `;
+            container.appendChild(item);
+        });
+    });
+}
+
+function handleDragOver(e) {
+    e.preventDefault();
+    e.currentTarget.classList.add('drag-over');
+}
+
+function handleDragLeave(e) {
+    e.currentTarget.classList.remove('drag-over');
+}
+
+function handleDrop(e) {
+    e.preventDefault();
+    e.currentTarget.classList.remove('drag-over');
+    handleFileSelect(e.dataTransfer.files);
+}
+
+function readFileAsDataURL(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+    });
+}
+
+async function uploadDocuments() {
+    if (selectedFiles.length === 0) return [];
+    const fileData = [];
+    for (const file of selectedFiles) {
+        const dataUrl = await readFileAsDataURL(file);
+        fileData.push({ name: file.name, type: file.type, size: file.size, data: dataUrl });
+    }
+    const res = await fetch('/.netlify/functions/upload-documents', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ files: fileData }),
+    });
+    if (!res.ok) throw new Error('Document upload failed');
+    const result = await res.json();
+    return result.uploads || [];
+}
+
+function showUploadWaiting(total) {
+    let overlay = document.getElementById('uploadWaiting');
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.id = 'uploadWaiting';
+        overlay.className = 'upload-overlay';
+        overlay.innerHTML = `
+            <div class="upload-overlay-box">
+                <div class="upload-spinner"></div>
+                <div class="upload-overlay-title">Uploading Documents</div>
+                <div class="upload-overlay-status" id="uploadStatus">
+                    Uploading ${total} document${total !== 1 ? 's' : ''}…
+                </div>
+            </div>`;
+        document.body.appendChild(overlay);
+    }
+    overlay.style.display = 'flex';
+}
+
+function hideUploadWaiting() {
+    const overlay = document.getElementById('uploadWaiting');
+    if (overlay) overlay.style.display = 'none';
+}
+
+// ===================================
 // STEP NAVIGATION
 // ===================================
 
@@ -314,8 +448,33 @@ document.addEventListener('DOMContentLoaded', function() {
         submitBtn.textContent = 'Processing...';
 
         try {
+            // Upload documents first if any were attached
+            let uploadedDocs = [];
+            if (selectedFiles.length > 0) {
+                showUploadWaiting(selectedFiles.length);
+                try {
+                    uploadedDocs = await uploadDocuments();
+                } catch (uploadErr) {
+                    hideUploadWaiting();
+                    document.getElementById('errorMessage').textContent = '⚠ Document upload failed. Please try again.';
+                    document.getElementById('errorMessage').style.display = 'block';
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Submit Application';
+                    return;
+                }
+                hideUploadWaiting();
+            }
+
             const payload = buildGHLPayload();
-            
+
+            // Attach document metadata to payload
+            if (uploadedDocs.length > 0) {
+                payload.customFields['Documents_Attached'] = String(uploadedDocs.length);
+                payload.customFields['Document_Names'] = uploadedDocs.map(d => d.name).join(', ');
+                payload.description += `\n\nAttached Documents (${uploadedDocs.length}):\n` +
+                    uploadedDocs.map(d => `• ${d.name} (${(d.size / 1024 / 1024).toFixed(1)} MB)`).join('\n');
+            }
+
             // Submit to backend
             const response = await fetch(CONFIG.webhookUrl, {
                 method: 'POST',
@@ -334,6 +493,8 @@ document.addEventListener('DOMContentLoaded', function() {
             // Show success
             document.getElementById('successMessage').style.display = 'block';
             form.reset();
+            selectedFiles = [];
+            renderFileList();
             formData = { loanType: null };
             currentStep = 1;
             showStep(1);
